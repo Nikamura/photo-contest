@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -9,11 +8,12 @@
 	<h1>My Blog</h1>
 	<main>
 		<div>
-			<!-- 2. -->
 			{#each data.contests as contest (contest.id)}
-				<div class="contest" on:click={() => goto(`/contests/${contest.id}`)}>
-					<h2>{contest.name}</h2>
-				</div>
+				<a href="/contests/{contest.id}">
+					<div class="contest">
+						<h2>{contest.name}</h2>
+					</div>
+				</a>
 			{/each}
 		</div>
 	</main>
