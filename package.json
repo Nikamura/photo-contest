@@ -4,15 +4,15 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "npm run codegen && vite build",
+		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"codegen": "prisma generate",
 		"migrate:dev": "prisma migrate dev",
-		"seed": "prisma db seed"
+		"seed": "prisma db seed",
+		"postinstall": "prisma generate && prisma migrate deploy"
 	},
 	"devDependencies": {
 		"@prisma/client": "^5.4.1",
