@@ -17,3 +17,13 @@ model ContestItem {
   id   String @id @default(uuid())
   file String
 }
+
+model FileUpload {
+  id   String @id @default(uuid())
+  name String
+
+  contentDisposition String?
+  contentType        String?
+  pathname           String?
+  url                String?
+}
