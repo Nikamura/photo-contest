@@ -1,6 +1,7 @@
 <script lang="ts">
   import { invalidateAll } from "$app/navigation";
   import { applyAction, deserialize } from "$app/forms";
+  import { Image } from "image-js";
 
   import type { ActionData } from "./$types";
   import type { ActionResult } from "@sveltejs/kit";
@@ -18,11 +19,24 @@
       body: JSON.stringify({ fileName: file.name }),
     });
 
-    const { url, id } = await resp.json();
+    const { url, id, thumbnailUrl } = await resp.json();
 
     await fetch(url, {
       method: "PUT",
       body: file,
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+    });
+
+    const image = await Image.load(await file.arrayBuffer());
+    // TODO: vertical photos seems to get rotated 90 degrees in the thumbnail
+    const thumbnailFile = image.resize({ width: 1000 }).toBuffer();
+
+    await fetch(thumbnailUrl, {
+      method: "PUT",
+      body: thumbnailFile,
     }).then((response) => {
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);

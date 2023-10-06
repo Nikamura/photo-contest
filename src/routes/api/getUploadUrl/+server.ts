@@ -14,6 +14,9 @@ export async function POST({ request }) {
 
   const bucketName = "photo-contest";
   const bucketKey = `${fileUpload.createdAt.toISOString()}-${fileUpload.id}/${fileUpload.fileName}`;
+  const thumbnailBucketKey = `${fileUpload.createdAt.toISOString()}-${fileUpload.id}/thumb-${
+    fileUpload.fileName
+  }`;
 
   await prisma.fileUpload.update({
     where: {
@@ -22,6 +25,7 @@ export async function POST({ request }) {
     data: {
       bucketName,
       bucketKey,
+      thumbnailBucketKey,
     },
   });
 
@@ -30,9 +34,16 @@ export async function POST({ request }) {
     Key: bucketKey,
   });
 
+  const thumbnailPutObjectCommand = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: thumbnailBucketKey,
+  });
+
   const url = await getSignedUrl(s3, putObjectCommand);
+  const thumbnailUrl = await getSignedUrl(s3, thumbnailPutObjectCommand);
   const jsonResponse = {
     url,
+    thumbnailUrl,
     id: fileUpload.id,
   };
   return json(jsonResponse);

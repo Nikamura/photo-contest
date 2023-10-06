@@ -14,7 +14,7 @@ export const actions = {
 
     const putObjectCommand = new GetObjectCommand({
       Bucket: fileUpload.bucketName!,
-      Key: fileUpload.bucketKey!,
+      Key: fileUpload.thumbnailBucketKey ?? fileUpload.bucketKey!,
     });
 
     const url = await getSignedUrl(s3, putObjectCommand);
