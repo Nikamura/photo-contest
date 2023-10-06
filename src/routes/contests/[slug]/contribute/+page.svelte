@@ -1,7 +1,7 @@
 <script lang="ts">
   import { upload } from "@vercel/blob/client";
   import { v4 as uuidv4 } from "uuid";
-  import { invalidateAll, goto } from "$app/navigation";
+  import { invalidateAll } from "$app/navigation";
   import { applyAction, deserialize } from "$app/forms";
 
   import type { ActionData } from "./$types";
@@ -59,6 +59,7 @@
   {/if}
 
   {#if imageUrl}
+    <!-- svelte-ignore a11y-missing-attribute -->
     <img src={imageUrl} />
   {/if}
 </form>
