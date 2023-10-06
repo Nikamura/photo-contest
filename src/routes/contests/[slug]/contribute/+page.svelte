@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { upload } from "@vercel/blob/client";
-  import { v4 as uuidv4 } from "uuid";
   import { invalidateAll } from "$app/navigation";
   import { applyAction, deserialize } from "$app/forms";
 
@@ -9,23 +7,30 @@
 
   export let form: ActionData;
 
-  export let imageUrl: string;
-
   async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
     const actionUrl = event.currentTarget.action;
     const data = new FormData(event.currentTarget);
 
     const file = data.get("file") as File;
-    const id = uuidv4();
-    const pathname = `${id}/${file.name}`;
 
-    const blob = await upload(pathname, file, {
-      access: "public",
-      handleUploadUrl: "/api/getUploadToken",
-      clientPayload: JSON.stringify({ id, fileName: file.name }),
+    const resp = await fetch("/api/getUploadUrl", {
+      method: "POST",
+      body: JSON.stringify({ fileName: file.name }),
+    });
+
+    const { url, id } = await resp.json();
+
+    await fetch(url, {
+      method: "PUT",
+      body: file,
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
     });
 
     data.append("id", id);
+    data.delete("file");
 
     const response = await fetch(actionUrl, {
       method: "POST",
@@ -36,7 +41,6 @@
 
     if (result.type === "success") {
       await invalidateAll();
-      imageUrl = blob.url;
     }
 
     applyAction(result);
@@ -55,11 +59,7 @@
   <button type="submit">Submit</button>
 
   {#if form}
-    <p>uploaded {form.fileUpload.url}</p>
-  {/if}
-
-  {#if imageUrl}
     <!-- svelte-ignore a11y-missing-attribute -->
-    <img src={imageUrl} />
+    <img src={form.url} />
   {/if}
 </form>
