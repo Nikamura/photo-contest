@@ -19,9 +19,12 @@
 	</main>
 </div>
 
-<style>
+<style lang="postcss">
 	div {
 		color: inherit;
 		padding: 2rem;
+	}
+	:global(html) {
+		background-color: theme(colors.gray.100);
 	}
 </style>
