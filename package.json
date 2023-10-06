@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "migrate:dev": "prisma migrate dev",
-    "postinstall": "npm install --platform=linux --arch=x64 sharp && prisma generate && prisma migrate deploy && prisma db seed",
+    "postinstall": "npm install --no-save sharp && prisma generate && prisma migrate deploy && prisma db seed",
     "preinstall": "npx only-allow bun",
     "preview": "vite preview"
   },
