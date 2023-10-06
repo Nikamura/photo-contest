@@ -5,7 +5,7 @@
 </script>
 
 <div>
-  <h1>My Blog</h1>
+  <h1>Contests</h1>
   <main>
     <a href="/contests/{data?.contest?.id}/contribute">Contribute</a>
     <div>hi</div>
