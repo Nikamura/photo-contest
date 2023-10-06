@@ -11,3 +11,5 @@ vite.config.ts.timestamp-*
 
 prisma/*.db
 prisma/*.db-journal
+
+.vercel/
