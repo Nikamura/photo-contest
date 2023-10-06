@@ -1,6 +1,8 @@
 import { json } from "@sveltejs/kit";
-import minio from "$lib/minio";
 import prisma from "../../../lib/prisma";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import s3 from "$lib/s3";
 
 export async function POST({ request }) {
   const { fileName } = await request.json();
@@ -23,9 +25,14 @@ export async function POST({ request }) {
     },
   });
 
-  const presignedUrl = await minio.presignedPutObject(bucketName, bucketKey);
+  const putObjectCommand = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: bucketKey,
+  });
+
+  const url = await getSignedUrl(s3, putObjectCommand);
   const jsonResponse = {
-    url: presignedUrl,
+    url,
     id: fileUpload.id,
   };
   return json(jsonResponse);
