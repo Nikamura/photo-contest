@@ -8,6 +8,11 @@
   <h1>My Blog</h1>
   <main>
     <div>
+      <a href="/admin/uploads">
+        <button>Uploads Admin</button>
+      </a>
+    </div>
+    <div>
       {#each data.contests as contest (contest.id)}
         <a href="/contests/{contest.id}">
           <div class="contest">

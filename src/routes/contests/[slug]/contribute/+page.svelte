@@ -30,18 +30,23 @@
       }
     });
 
-    const image = await Image.load(await file.arrayBuffer());
-    // TODO: vertical photos seems to get rotated 90 degrees in the thumbnail
-    const thumbnailFile = image.resize({ width: 1000 }).toBuffer();
-
-    await fetch(thumbnailUrl, {
-      method: "PUT",
-      body: thumbnailFile,
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error(`${response.status}: ${response.statusText}`);
-      }
+    await fetch("/api/generateThumbnail", {
+      method: "POST",
+      body: JSON.stringify({ id }),
     });
+
+    // const image = await Image.load(await file.arrayBuffer());
+    // // TODO: vertical photos seems to get rotated 90 degrees in the thumbnail
+    // const thumbnailFile = image.resize({ width: 1000 }).toBuffer();
+
+    // await fetch(thumbnailUrl, {
+    //   method: "PUT",
+    //   body: thumbnailFile,
+    // }).then((response) => {
+    //   if (!response.ok) {
+    //     throw new Error(`${response.status}: ${response.statusText}`);
+    //   }
+    // });
 
     data.append("id", id);
     data.delete("file");
