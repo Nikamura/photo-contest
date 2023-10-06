@@ -3,15 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --check . && eslint .",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "dev": "vite dev",
     "format": "prettier --write .",
+    "lint": "prettier --check . && eslint .",
     "migrate:dev": "prisma migrate dev",
-    "postinstall": "prisma generate && prisma migrate deploy && prisma db seed"
+    "postinstall": "prisma generate && prisma migrate deploy && prisma db seed",
+    "preinstall": "npx only-allow bun",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@prisma/client": "5.4.1",
