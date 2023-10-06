@@ -7,11 +7,13 @@ const prisma = new PrismaClient();
 async function main() {
   console.log(`Start seeding ...`);
 
-  await prisma.contest.create({
-    data: {
-      name: `Seeded contest ${new Date().toISOString()}`,
-    },
-  });
+  if ((await prisma.contest.count()) === 0) {
+    await prisma.contest.create({
+      data: {
+        name: `Seeded contest ${new Date().toISOString()}`,
+      },
+    });
+  }
 
   console.log(`Seeding finished.`);
 }
