@@ -8,13 +8,17 @@
   <h1 class="mb-3 text-2xl">Active contests</h1>
   <main>
     <div>
-      {#each data.contests as contest (contest.id)}
-        <a href="/contests/{contest.id}">
-          <div class="contest">
-            <h2>{contest.name}</h2>
+      <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        {#each data.contests as contest (contest.id)}
+          <div class="bg-white px-4 py-5 text-black sm:px-6">
+            <a href="/contests/{contest.id}">
+              <h2>{contest.name}</h2>
+              <small>Contributions: 0</small>
+              <small>Deadline: XXXX-XX-XX XX:XX</small>
+            </a>
           </div>
-        </a>
-      {/each}
+        {/each}
+      </div>
     </div>
   </main>
 </div>
