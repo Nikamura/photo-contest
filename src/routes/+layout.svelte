@@ -21,9 +21,6 @@
     </div>
     <div class="flex flex-1 justify-end">
       {#if $page.data.session}
-        {#if $page.data.session.user?.image}
-          <span style="background-image: url('{$page.data.session.user.image}')" class="avatar" />
-        {/if}
         <span class="mr-1 hidden sm:block">
           Hey, <strong>{$page.data.session.user?.name ?? "User"}</strong>!
         </span>
