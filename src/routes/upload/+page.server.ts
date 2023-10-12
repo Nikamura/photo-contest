@@ -7,17 +7,21 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 export const actions = {
   upload: async ({ request }) => {
     const formData = await request.formData();
-    const id = formData.get("id") as string;
-    const fileUpload = await prisma.fileUpload.findUniqueOrThrow({
-      where: { id: id },
+    const ids = formData.getAll("ids") as string[];
+    const fileUploads = await prisma.fileUpload.findMany({
+      where: { id: { in: ids } },
     });
 
-    const putObjectCommand = new GetObjectCommand({
-      Bucket: fileUpload.bucketName!,
-      Key: fileUpload.thumbnailBucketKey ?? fileUpload.bucketKey!,
-    });
+    const urls = await Promise.all(
+      fileUploads.map(async (fileUpload) => {
+        const putObjectCommand = new GetObjectCommand({
+          Bucket: fileUpload.bucketName!,
+          Key: fileUpload.thumbnailBucketKey ?? fileUpload.bucketKey!,
+        });
 
-    const url = await getSignedUrl(s3, putObjectCommand);
-    return { url };
+        return getSignedUrl(s3, putObjectCommand);
+      }),
+    );
+    return { urls };
   },
 } satisfies Actions;
