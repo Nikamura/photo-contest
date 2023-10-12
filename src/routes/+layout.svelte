@@ -13,8 +13,8 @@
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
-      <li><a href="/upload"><IconUpload class="inline" /> Upload</a></li>
       {#if $page.data.session}
+        <li><a href="/upload"><IconUpload class="inline" /> Upload</a></li>
         <li>
           <details>
             <summary
