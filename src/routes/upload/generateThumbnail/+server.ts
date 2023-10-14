@@ -2,15 +2,20 @@ import prisma from "$lib/prisma";
 import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import s3 from "$lib/s3";
 import sharp from "sharp";
-import { json } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
+  const user = (await locals.getSession())?.user;
+  if (!user) throw error(401);
+
   const { id } = await request.json();
   const fileUpload = await prisma.fileUpload.findUniqueOrThrow({
     where: {
       id,
     },
   });
+
+  if (fileUpload.ownerId !== user.id) throw error(401);
 
   const command = new GetObjectCommand({
     Bucket: fileUpload.bucketName!,

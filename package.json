@@ -11,13 +11,14 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "migrate:dev": "prisma migrate dev",
-    "migrate": "prisma migrate deploy && prisma db seed",
+    "migrate": "prisma migrate deploy && prisma db seed && prisma generate",
     "postinstall": "npm install --no-save sharp && prisma generate",
     "preinstall": "npx only-allow bun",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@auth/core": "0.16.1",
+    "@auth/prisma-adapter": "1.0.3",
     "@auth/sveltekit": "0.3.9",
     "@aws-sdk/client-s3": "3.425.0",
     "@aws-sdk/s3-request-presigner": "3.425.0",

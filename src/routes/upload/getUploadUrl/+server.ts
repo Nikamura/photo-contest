@@ -1,14 +1,19 @@
-import { json } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 import prisma from "../../../lib/prisma";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import s3 from "$lib/s3";
 
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
+  const user = (await locals.getSession())?.user;
+  if (!user) throw error(401);
+
   const { fileName } = await request.json();
+
   const fileUpload = await prisma.fileUpload.create({
     data: {
       fileName,
+      ownerId: user.id,
     },
   });
 

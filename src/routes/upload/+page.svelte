@@ -12,7 +12,7 @@
   let numberOfUploads = 0;
 
   async function uploadFile(file: File): Promise<string> {
-    const resp = await fetch("/api/getUploadUrl", {
+    const resp = await fetch("/upload/getUploadUrl", {
       method: "POST",
       body: JSON.stringify({ fileName: file.name }),
     });
@@ -28,7 +28,7 @@
       }
     });
 
-    await fetch("/api/generateThumbnail", {
+    await fetch("/upload/generateThumbnail", {
       method: "POST",
       body: JSON.stringify({ id }),
     });
