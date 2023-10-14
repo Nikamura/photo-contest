@@ -23,6 +23,7 @@
             >
 
             <ul class="bg-base-100 p-2">
+              <li><a href="/user/uploads">My Uploads</a></li>
               <li><button on:click={() => signOut()}>Log out</button></li>
             </ul>
           </details>

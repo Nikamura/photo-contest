@@ -10,3 +10,10 @@ bun dev
 # or start the server and open the app in a new browser tab
 bun dev --open
 ```
+
+### Refreshing jobs
+
+```
+source .env
+curl -XPOST $TRIGGERDEV_WEBHOOK_URL
+```
