@@ -3,7 +3,9 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PrismaClient } from "@prisma/client";
 import s3 from "./s3";
 
-const prisma = new PrismaClient({ log: ["query", "info", "warn", "error"] }).$extends({
+export const prismaClient = new PrismaClient({ log: ["query", "info", "warn", "error"] });
+
+const prisma = prismaClient.$extends({
   result: {
     fileUpload: {
       thumbnailUrl: {
