@@ -7,6 +7,7 @@ export default {
   plugins: [require("daisyui")],
   darkMode: "media",
   daisyui: {
-    themes: ["light", "dark"],
+    themes: ["cupcake", "dark"],
+    darkTheme: "dark",
   },
 };
