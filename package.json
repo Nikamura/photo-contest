@@ -11,8 +11,9 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "migrate:dev": "prisma migrate dev",
-    "postinstall": "npm install --no-save sharp && prisma generate && prisma migrate deploy && prisma db seed",
-    "preinstall": "npx only-allow bun",
+    "migrate": "prisma migrate deploy && prisma db seed",
+    "postinstall": "npm install --no-save sharp && prisma generate",
+    "preinstall": "bunx only-allow bun",
     "preview": "vite preview"
   },
   "devDependencies": {
