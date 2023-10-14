@@ -11,8 +11,9 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "migrate:dev": "prisma migrate dev",
-    "postinstall": "npm install --no-save sharp && prisma generate && prisma migrate deploy && prisma db seed",
-    "preinstall": "npx only-allow bun",
+    "migrate": "prisma migrate deploy && prisma db seed",
+    "postinstall": "npm install --no-save sharp && prisma generate",
+    "preinstall": "bunx only-allow bun",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -24,6 +25,8 @@
     "@prisma/client": "5.4.2",
     "@sveltejs/adapter-vercel": "3.0.3",
     "@sveltejs/kit": "1.25.1",
+    "@trigger.dev/sdk": "2.2.0",
+    "@trigger.dev/sveltekit": "2.2.0",
     "@typescript-eslint/eslint-plugin": "6.7.4",
     "@typescript-eslint/parser": "6.7.4",
     "@vercel/postgres": "0.5.0",
@@ -54,5 +57,8 @@
   },
   "trustedDependencies": [
     "sharp"
-  ]
+  ],
+  "trigger.dev": {
+    "endpointId": "photo-contest"
+  }
 }
