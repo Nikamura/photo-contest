@@ -9,12 +9,14 @@
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a class="btn btn-ghost text-xl normal-case" href="/">🍁 Photo Contest</a>
+    <a class="btn btn-ghost text-xl normal-case" href="/"
+      >📸🍁🇱🇹<span class="hidden sm:inline">Photo Contest</span></a
+    >
   </div>
   <div class="flex-none">
-    <ul class="menu menu-horizontal px-1">
+    <ul class="menu menu-horizontal z-10 px-1">
       {#if $page.data.session}
-        <li><a href="/upload"><IconUpload class="inline" /> Upload</a></li>
+        <li class="hidden sm:flex"><a href="/upload"><IconUpload class="inline" /> Upload</a></li>
         <li>
           <details>
             <summary
@@ -23,6 +25,10 @@
             >
 
             <ul class="bg-base-100 p-2">
+              <li class="flex sm:hidden">
+                <a href="/upload"><IconUpload class="inline" /> Upload</a>
+              </li>
+
               <li>
                 <a href="/users/{$page.data.session.user?.id}/uploads">My Uploads</a>
               </li>

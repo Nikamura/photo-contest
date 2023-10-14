@@ -12,6 +12,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     },
     select: {
       thumbnailUrl: true,
+      fileName: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -21,6 +22,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     fileUploads: await Promise.all(
       fileUploads.map(async (fileUpload) => ({
         thumbnailUrl: await fileUpload.thumbnailUrl,
+        fileName: fileUpload.fileName,
       })),
     ),
   };
