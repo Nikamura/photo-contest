@@ -15,6 +15,11 @@ model Contest {
 model FileUpload {
   id                 String   @id @default(uuid())
   fileName           String
+  metadata           Json?
+  exif               Json?
+  iptc               Json?
+  xmp                Json?
+  icc                Json?
   bucketKey          String?
   thumbnailBucketKey String?
   bucketName         String?

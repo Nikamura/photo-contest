@@ -10,10 +10,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     where: {
       ownerId: id,
     },
-    select: {
-      thumbnailUrl: true,
-      fileName: true,
-    },
     orderBy: {
       createdAt: "desc",
     },
@@ -23,6 +19,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
       fileUploads.map(async (fileUpload) => ({
         thumbnailUrl: await fileUpload.thumbnailUrl,
         fileName: fileUpload.fileName,
+        id: fileUpload.id,
+        metadata: fileUpload.metadata,
+        exif: fileUpload.exif,
       })),
     ),
   };

@@ -28,7 +28,7 @@
       }
     });
 
-    await fetch("/upload/generateThumbnail", {
+    await fetch("/upload/parse", {
       method: "POST",
       body: JSON.stringify({ id }),
     });

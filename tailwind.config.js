@@ -9,5 +9,6 @@ export default {
   daisyui: {
     themes: ["cupcake", "forest"],
     darkTheme: "forest",
+    logs: false,
   },
 };
