@@ -17,7 +17,9 @@
 
 <div class="mx-auto max-w-7xl px-6 py-10">
   <h1 class="mb-3 text-2xl">{data.fileName}</h1>
-
+  <div class="mb-3">
+    <a href={data.fileUrl} class="btn">View Original</a>
+  </div>
   <div class="flex flex-wrap">
     <div>
       <img src={data.thumbnailUrl} alt={data.fileName} />

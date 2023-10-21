@@ -23,6 +23,21 @@ const prisma = prismaClient.$extends({
           return getSignedUrl(s3, getObjectCommand);
         },
       },
+      fileUrl: {
+        needs: { bucketKey: true, bucketName: true },
+        async compute(fileUpload): Promise<string | null> {
+          if (!fileUpload.bucketKey || !fileUpload.bucketName) {
+            return null;
+          }
+
+          const getObjectCommand = new GetObjectCommand({
+            Bucket: fileUpload.bucketName,
+            Key: fileUpload.bucketKey,
+          });
+
+          return getSignedUrl(s3, getObjectCommand);
+        },
+      },
     },
   },
 });

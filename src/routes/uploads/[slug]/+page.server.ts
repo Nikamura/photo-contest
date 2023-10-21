@@ -21,5 +21,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     xmp: fileUpload.xmp,
     icc: fileUpload.icc,
     thumbnailUrl: await fileUpload.thumbnailUrl,
+    fileUrl: await fileUpload.fileUrl,
   };
 };
