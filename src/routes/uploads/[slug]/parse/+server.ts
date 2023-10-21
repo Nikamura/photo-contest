@@ -8,11 +8,11 @@ import iptc from "iptc-reader";
 import xmp from "xmp-reader";
 import icc from "icc";
 
-export async function POST({ request, locals }) {
+export async function POST({ locals, params }) {
   const user = (await locals.getSession())?.user;
   if (!user) throw error(401);
 
-  const { id } = await request.json();
+  const id = params.slug;
   const fileUpload = await prisma.fileUpload.findUniqueOrThrow({
     where: {
       id,
@@ -33,16 +33,34 @@ export async function POST({ request, locals }) {
 
   const { exif: exifRaw, iptc: iptcRaw, xmp: xmpRaw, icc: iccRaw, ...metadataRaw } = metadata;
 
+  function replacer(_key: string, value: unknown) {
+    if (value && typeof value === "object" && "type" in value && value.type === "Buffer") {
+      return undefined;
+    }
+    if (value instanceof Buffer) {
+      return undefined;
+    }
+    return value;
+  }
+
   await prisma.fileUpload.update({
     where: {
       id: fileUpload.id,
     },
     data: {
-      metadata: JSON.parse(JSON.stringify(metadataRaw)),
-      exif: exifRaw ? JSON.parse(JSON.stringify(exif(exifRaw))) : {},
-      iptc: iptcRaw ? JSON.parse(JSON.stringify(iptc(iptcRaw))) : {},
-      xmp: xmpRaw ? JSON.parse(JSON.stringify(xmp.fromBuffer(xmpRaw))) : {},
-      icc: iccRaw ? JSON.parse(JSON.stringify(icc.parse(iccRaw))) : {},
+      metadata: JSON.parse(JSON.stringify(metadataRaw, replacer).replace(/\\u0000/g, "")),
+      exif: exifRaw
+        ? JSON.parse(JSON.stringify(exif(exifRaw), replacer).replace(/\\u0000/g, ""))
+        : {},
+      iptc: iptcRaw
+        ? JSON.parse(JSON.stringify(iptc(iptcRaw), replacer).replace(/\\u0000/g, ""))
+        : {},
+      xmp: xmpRaw
+        ? JSON.parse(JSON.stringify(xmp.fromBuffer(xmpRaw), replacer).replace(/\\u0000/g, ""))
+        : {},
+      icc: iccRaw
+        ? JSON.parse(JSON.stringify(icc.parse(iccRaw), replacer).replace(/\\u0000/g, ""))
+        : {},
     },
   });
   const thumb = await input

@@ -1,11 +1,6 @@
 <script lang="ts">
-  import { invalidateAll } from "$app/navigation";
-  import { applyAction, deserialize } from "$app/forms";
-
-  import type { ActionData } from "./$types";
-  import type { ActionResult } from "@sveltejs/kit";
-
-  export let form: ActionData;
+  import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
 
   let uploading = false;
   let progress = 0;
@@ -28,9 +23,8 @@
       }
     });
 
-    await fetch("/upload/parse", {
+    await fetch(`/uploads/${id}/parse`, {
       method: "POST",
-      body: JSON.stringify({ id }),
     });
 
     return id;
@@ -39,34 +33,17 @@
   async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
     uploading = true;
     progress = 0;
-    const actionUrl = event.currentTarget.action;
     const data = new FormData(event.currentTarget);
 
     const files = data.getAll("files") as File[];
     numberOfUploads = files.length;
 
     for (const file of files) {
-      const id = await uploadFile(file);
-      data.append("ids", id);
+      await uploadFile(file);
       progress++;
     }
 
-    data.delete("file");
-    data.delete("files");
-
-    const response = await fetch(actionUrl, {
-      method: "POST",
-      body: data,
-    });
-
-    const result: ActionResult = deserialize(await response.text());
-
-    if (result.type === "success") {
-      await invalidateAll();
-    }
-
-    applyAction(result);
-    uploading = false;
+    goto(`/users/${$page.data.session?.user?.id}/uploads`);
   }
 </script>
 
@@ -99,16 +76,7 @@
         Uploading {progress}/{numberOfUploads}...
       {:else}
         Upload
-      {/if}</button
-    >
-
-    {#if form}
-      <h2 class="mt-5 text-xl">Preview</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {#each form.urls as url}
-          <div class="mb-1 sm:mr-1"><img src={url} alt="user's upload thumbnail" /></div>
-        {/each}
-      </div>
-    {/if}
+      {/if}
+    </button>
   </form>
 </div>

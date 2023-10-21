@@ -13,6 +13,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     },
   });
   return {
+    id: fileUpload.id,
     fileName: fileUpload.fileName,
     metadata: fileUpload.metadata,
     exif: fileUpload.exif,
