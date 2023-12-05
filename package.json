@@ -12,7 +12,7 @@
     "lint": "prettier --check . && eslint .",
     "migrate:dev": "prisma migrate dev",
     "migrate": "prisma migrate deploy && prisma db seed && prisma generate",
-    "postinstall": "npm install --no-save sharp && prisma generate",
+    "postinstall": "npm install --os=linux --cpu=arm64 sharp && prisma generate",
     "preinstall": "npx only-allow bun",
     "preview": "vite preview"
   },
