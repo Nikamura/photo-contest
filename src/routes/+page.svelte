@@ -13,7 +13,7 @@
           <h2 class="card-title">{contest.name}</h2>
           <!-- <p>If a dog chews shoes whose shoes does he choose?</p> -->
           <div class="card-actions justify-end">
-            <a href="/contests/{contest.id}" class="btn">View</a>
+            <a href="/contests/{contest.id}" class="btn">Participate</a>
           </div>
         </div>
       </div>
