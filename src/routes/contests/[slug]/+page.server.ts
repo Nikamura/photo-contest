@@ -43,3 +43,42 @@ export const load = (async ({ params, locals }) => {
     selectedPhotos: userEntries.map((entry) => entry.fileUploadId),
   };
 }) satisfies PageServerLoad;
+
+export const actions = {
+  saveSelectedPhotos: async (event) => {
+    const user = (await event.locals.getSession())?.user;
+    if (!user) throw error(401);
+
+    const data = await event.request.formData();
+    const selectedPhotos = data.getAll("selectedPhotos") as string[];
+
+    const fileUploads = await prisma.fileUpload.findMany({
+      where: {
+        userId: user.id,
+        id: { in: selectedPhotos },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (fileUploads.length !== selectedPhotos.length) throw error(400);
+    const contest = await prisma.contest.findFirst({
+      where: {
+        id: event.params.slug,
+      },
+    });
+    if (!contest) throw error(404);
+
+    await prisma.contestEntry.createMany({
+      data: fileUploads.map((fileUpload) => ({
+        contestId: contest.id,
+        userId: user.id,
+        fileUploadId: fileUpload.id,
+      })),
+      skipDuplicates: true,
+    });
+
+    return { success: true };
+  },
+};
