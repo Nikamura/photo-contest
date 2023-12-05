@@ -19,7 +19,7 @@ export async function POST({ locals, params }) {
     },
   });
 
-  if (fileUpload.ownerId !== user.id) throw error(401);
+  if (fileUpload.userId !== user.id) throw error(401);
 
   const command = new GetObjectCommand({
     Bucket: fileUpload.bucketName!,

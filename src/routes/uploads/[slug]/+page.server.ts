@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
   const fileUpload = await prisma.fileUpload.findFirstOrThrow({
     where: {
       id: id,
-      ownerId: user.id,
+      userId: user.id,
     },
   });
   return {

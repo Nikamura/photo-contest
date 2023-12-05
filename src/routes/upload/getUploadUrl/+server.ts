@@ -13,7 +13,7 @@ export async function POST({ request, locals }) {
   const fileUpload = await prisma.fileUpload.create({
     data: {
       fileName,
-      ownerId: user.id,
+      userId: user.id,
     },
   });
 

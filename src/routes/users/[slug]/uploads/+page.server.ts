@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
   if (user?.id !== id) throw error(401);
   const fileUploads = await prisma.fileUpload.findMany({
     where: {
-      ownerId: id,
+      userId: id,
     },
     orderBy: {
       createdAt: "desc",
