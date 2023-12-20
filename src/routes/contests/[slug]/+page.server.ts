@@ -11,6 +11,16 @@ export const load = (async ({ params, locals }) => {
     where: {
       id: params.slug,
     },
+    select: {
+      id: true,
+      name: true,
+      contestStatus: true,
+      _count: {
+        select: {
+          contestEntry: {},
+        },
+      },
+    },
   });
   if (!contest) throw error(404);
 

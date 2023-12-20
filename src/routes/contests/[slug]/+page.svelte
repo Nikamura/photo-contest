@@ -21,12 +21,15 @@
       </li>
     </ul>
   </div>
+  <div class="mt-3">
+    Contest entries: {data.contest._count.contestEntry}
+  </div>
 </div>
 
 {#if data.contest.contestStatus === "VOTING"}
   <div class="pl-6">
-    <a href="/contests/{data.contest.id}/vote" class="btn btn-secondary btn-lg btn-wide"
-      >VOTE NOW
+    <a href="/contests/{data.contest.id}/vote" class="btn btn-secondary btn-lg btn-wide">
+      VOTE NOW
     </a>
   </div>
 {/if}
@@ -50,6 +53,7 @@
           {/each}
         </select>
       </div>
+      <button class="btn mt-1">Save</button>
     </div>
   {/if}
 
@@ -68,10 +72,6 @@
           </div>
         {/each}
       </div>
-
-      {#if data.contest.contestStatus === "ACCEPTING_ENTRIES"}
-        <button class="btn mt-1">Save</button>
-      {/if}
     </div>
   {/if}
 </form>

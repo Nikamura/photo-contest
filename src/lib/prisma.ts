@@ -8,6 +8,28 @@ export const prismaClient = new PrismaClient({ log: ["query", "info", "warn", "e
 const prisma = prismaClient.$extends({
   result: {
     fileUpload: {
+      width: {
+        needs: { metadata: true },
+        compute(fileUpload): string | null {
+          return fileUpload.metadata &&
+            typeof fileUpload.metadata === "object" &&
+            !Array.isArray(fileUpload.metadata) &&
+            fileUpload.metadata?.width
+            ? String(fileUpload.metadata?.width)
+            : null;
+        },
+      },
+      height: {
+        needs: { metadata: true },
+        compute(fileUpload): string | null {
+          return fileUpload.metadata &&
+            typeof fileUpload.metadata === "object" &&
+            !Array.isArray(fileUpload.metadata) &&
+            fileUpload.metadata?.height
+            ? String(fileUpload.metadata?.height)
+            : null;
+        },
+      },
       thumbnailUrl: {
         needs: { thumbnailBucketKey: true, bucketName: true },
         async compute(fileUpload): Promise<string | null> {
