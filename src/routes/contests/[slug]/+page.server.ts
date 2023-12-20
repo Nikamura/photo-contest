@@ -1,6 +1,7 @@
 import { error } from "@sveltejs/kit";
 import prisma from "$lib/prisma";
 import type { PageServerLoad } from "./$types";
+import { isAdmin } from "../../../tools/isAdmin";
 
 export const load = (async ({ params, locals }) => {
   const user = (await locals.getSession())?.user;
@@ -41,6 +42,7 @@ export const load = (async ({ params, locals }) => {
     ),
     contest,
     selectedPhotos: userEntries.map((entry) => entry.fileUploadId),
+    isAdmin: isAdmin(user),
   };
 }) satisfies PageServerLoad;
 
@@ -69,6 +71,9 @@ export const actions = {
       },
     });
     if (!contest) throw error(404);
+    if (contest.contestStatus !== "ACCEPTING_ENTRIES") {
+      throw error(400, "Contest is not accepting entries");
+    }
 
     await prisma.contestEntry.createMany({
       data: fileUploads.map((fileUpload) => ({

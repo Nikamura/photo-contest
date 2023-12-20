@@ -23,7 +23,7 @@
           <h2 class="card-title">{contest.name}</h2>
           <div class="card-actions justify-end">
             <a href="/contests/{contest.id}" class="btn">Participate</a>
-            {#if data.isAdmin}
+            {#if data.isAdmin && contest.contestStatus === "ACCEPTING_ENTRIES"}
               <button on:click={() => deleteContest(contest.id)} class="btn btn-error"
                 >Delete</button
               >
