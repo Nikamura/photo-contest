@@ -13,6 +13,14 @@ async function main() {
     });
   }
 
+  if ((await prisma.contest.count()) === 1) {
+    await prisma.contest.create({
+      data: {
+        name: `Rudens nuotraukų konkursas 2023 Test 2`,
+      },
+    });
+  }
+
   console.log(`Seeding finished.`);
 }
 
