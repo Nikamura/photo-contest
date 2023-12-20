@@ -8,7 +8,7 @@ async function main() {
   if ((await prisma.contest.count()) === 0) {
     await prisma.contest.create({
       data: {
-        name: `Seeded contest ${new Date().toISOString()}`,
+        name: `Rudens nuotraukų konkursas 2023`,
       },
     });
   }

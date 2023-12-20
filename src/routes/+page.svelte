@@ -2,6 +2,16 @@
   import type { PageData } from "./$types";
 
   export let data: PageData;
+
+  async function deleteContest(id: string) {
+    if (!confirm("Are you sure you want to delete this contest?")) return;
+    const response = await fetch(`/contests/${id}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      location.reload();
+    }
+  }
 </script>
 
 <div class="mx-auto max-w-7xl px-6 py-10">
@@ -11,9 +21,13 @@
       <div class="card w-96 bg-primary text-primary-content">
         <div class="card-body">
           <h2 class="card-title">{contest.name}</h2>
-          <!-- <p>If a dog chews shoes whose shoes does he choose?</p> -->
           <div class="card-actions justify-end">
             <a href="/contests/{contest.id}" class="btn">Participate</a>
+            {#if data.isAdmin}
+              <button on:click={() => deleteContest(contest.id)} class="btn btn-error"
+                >Delete</button
+              >
+            {/if}
           </div>
         </div>
       </div>

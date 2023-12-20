@@ -11,12 +11,10 @@
 
   <div class="flex flex-wrap">
     <ul class="steps steps-vertical sm:steps-horizontal">
-      <li class="step step-primary">Take photos <br class="hidden sm:grid" />(09/01 - 12/01)</li>
-      <li class="step step-primary">
-        Upload photos <br class="hidden sm:grid" />(12/01 - 12/25)
-      </li>
-      <li class="step">Rate photos <br class="hidden sm:grid" />(12/25 - 12/30)</li>
-      <li class="step">Reveal the winner <br class="hidden sm:grid" />(12/30)</li>
+      <li class="step step-primary">Take photos</li>
+      <li class="step step-primary">Upload photos</li>
+      <li class="step">Rate photos</li>
+      <li class="step">Reveal the winner</li>
     </ul>
   </div>
 </div>
