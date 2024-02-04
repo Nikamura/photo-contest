@@ -1,7 +1,4 @@
-import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PrismaClient } from "@prisma/client";
-import s3 from "./s3";
 
 export const prismaClient = new PrismaClient({ log: ["query", "info", "warn", "error"] });
 
@@ -36,13 +33,7 @@ const prisma = prismaClient.$extends({
           if (!fileUpload.thumbnailBucketKey || !fileUpload.bucketName) {
             return null;
           }
-
-          const getObjectCommand = new GetObjectCommand({
-            Bucket: fileUpload.bucketName,
-            Key: fileUpload.thumbnailBucketKey,
-          });
-
-          return getSignedUrl(s3, getObjectCommand);
+          return `https://${process.env.MINIO_SERVER_ENDPOINT}/${fileUpload.bucketName}/${fileUpload.thumbnailBucketKey}`;
         },
       },
       fileUrl: {
@@ -51,13 +42,7 @@ const prisma = prismaClient.$extends({
           if (!fileUpload.bucketKey || !fileUpload.bucketName) {
             return null;
           }
-
-          const getObjectCommand = new GetObjectCommand({
-            Bucket: fileUpload.bucketName,
-            Key: fileUpload.bucketKey,
-          });
-
-          return getSignedUrl(s3, getObjectCommand);
+          return `https://${process.env.MINIO_SERVER_ENDPOINT}/${fileUpload.bucketName}/${fileUpload.bucketKey}`;
         },
       },
     },

@@ -1,12 +1,35 @@
 import prisma from "$lib/prisma";
-import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import s3 from "$lib/s3";
+import minio from "$lib/minio";
 import sharp from "sharp";
 import { error, json } from "@sveltejs/kit";
 import exif from "exif-reader";
 import iptc from "iptc-reader";
 import xmp from "xmp-reader";
 import icc from "icc";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function streamToBuffer(readableStream: any): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    readableStream.on("data", (data: any) => {
+      if (typeof data === "string") {
+        // Convert string to Buffer assuming UTF-8 encoding
+        chunks.push(Buffer.from(data, "utf-8"));
+      } else if (data instanceof Buffer) {
+        chunks.push(data);
+      } else {
+        // Convert other data types to JSON and then to a Buffer
+        const jsonData = JSON.stringify(data);
+        chunks.push(Buffer.from(jsonData, "utf-8"));
+      }
+    });
+    readableStream.on("end", () => {
+      resolve(Buffer.concat(chunks));
+    });
+    readableStream.on("error", reject);
+  });
+}
 
 export async function POST({ locals, params }) {
   const user = (await locals.getSession())?.user;
@@ -21,13 +44,8 @@ export async function POST({ locals, params }) {
 
   if (fileUpload.userId !== user.id) throw error(401);
 
-  const command = new GetObjectCommand({
-    Bucket: fileUpload.bucketName!,
-    Key: fileUpload.bucketKey!,
-  });
-
-  const resp = await s3.send(command);
-  const body = await resp.Body?.transformToByteArray();
+  const resp = await minio.getObject(fileUpload.bucketName!, fileUpload.bucketKey!);
+  const body = await streamToBuffer(resp);
   const input = sharp(body);
   const metadata = await input.metadata();
 
@@ -68,11 +86,6 @@ export async function POST({ locals, params }) {
     .rotate()
     .toBuffer();
 
-  const thumbnailPutObjectCommand = new PutObjectCommand({
-    Bucket: fileUpload.bucketName!,
-    Key: fileUpload.thumbnailBucketKey!,
-    Body: thumb,
-  });
-  await s3.send(thumbnailPutObjectCommand);
+  await minio.putObject(fileUpload.bucketName!, fileUpload.thumbnailBucketKey!, thumb);
   return json({});
 }

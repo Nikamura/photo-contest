@@ -1,8 +1,6 @@
 import { error, json } from "@sveltejs/kit";
 import prisma from "../../../lib/prisma";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import s3 from "$lib/s3";
+import minio from "$lib/minio";
 
 export async function POST({ request, locals }) {
   const user = (await locals.getSession())?.user;
@@ -34,12 +32,7 @@ export async function POST({ request, locals }) {
     },
   });
 
-  const putObjectCommand = new PutObjectCommand({
-    Bucket: bucketName,
-    Key: bucketKey,
-  });
-
-  const url = await getSignedUrl(s3, putObjectCommand);
+  const url = await minio.presignedPutObject(bucketName, bucketKey);
 
   const jsonResponse = {
     url,
