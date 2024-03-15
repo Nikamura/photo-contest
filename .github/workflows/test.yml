@@ -1,22 +1,21 @@
-name: testing-workflow
+name: Test and Deploy
 
 on:
   push:
 
 jobs:
   test:
-    name: testing-job
+    name: testing-deployment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: "pnpm"
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Install Dependencies
         run: pnpm install
       - name: Build & Lint & Test
