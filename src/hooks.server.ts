@@ -34,14 +34,14 @@ const handlerFunc = SvelteKitAuth(async () => {
 // So it works via reverse proxy :/
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handle: Handle = ({ event, resolve }: any) => {
-  event.url.protocol = "https:";
+  // event.url.protocol = "http:";
 
-  const symbol = Object.getOwnPropertySymbols(event.request)[1];
+  // const symbol = Object.getOwnPropertySymbols(event.request)[1];
 
-  event.request[symbol].url.protocol = "https:";
-  for (let i = 0; i < event.request[symbol].urlList.length; i++) {
-    event.request[symbol].urlList[i].protocol = "https:";
-  }
+  // event.request[symbol].url.protocol = "http:";
+  // for (let i = 0; i < event.request[symbol].urlList.length; i++) {
+  //   event.request[symbol].urlList[i].protocol = "http:";
+  // }
 
   return handlerFunc({ event, resolve });
 };
