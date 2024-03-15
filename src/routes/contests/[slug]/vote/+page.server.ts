@@ -4,7 +4,7 @@ import type { PageServerLoad } from "./$types";
 
 export const load = (async ({ params, locals }) => {
   const user = (await locals.getSession())?.user;
-  if (!user) throw error(401);
+  if (!user) error(401);
 
   const contest = await prisma.contest.findFirst({
     where: {
@@ -21,7 +21,7 @@ export const load = (async ({ params, locals }) => {
       },
     },
   });
-  if (!contest) throw error(404);
+  if (!contest) error(404);
 
   return {
     entries: await Promise.all(

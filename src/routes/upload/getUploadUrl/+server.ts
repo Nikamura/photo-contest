@@ -4,7 +4,7 @@ import minio from "$lib/minio";
 
 export async function POST({ request, locals }) {
   const user = (await locals.getSession())?.user;
-  if (!user) throw error(401);
+  if (!user) error(401);
 
   const { fileName } = await request.json();
 

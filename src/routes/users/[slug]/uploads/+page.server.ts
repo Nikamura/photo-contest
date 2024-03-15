@@ -5,7 +5,7 @@ import type { PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({ params, locals }) => {
   const id = params.slug;
   const user = (await locals.getSession())?.user;
-  if (user?.id !== id) throw error(401);
+  if (user?.id !== id) error(401);
   const fileUploads = await prisma.fileUpload.findMany({
     where: {
       userId: id,

@@ -5,16 +5,16 @@ import { isAdmin } from "../../../tools/isAdmin";
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
   const user = (await locals.getSession())?.user;
-  if (!user) throw error(401);
+  if (!user) error(401);
 
-  if (!isAdmin(user)) throw error(403);
+  if (!isAdmin(user)) error(403);
 
   const contest = await prisma.contest.findFirst({
     where: {
       id: params.slug,
     },
   });
-  if (!contest) throw error(404);
+  if (!contest) error(404);
 
   await prisma.contest.delete({
     where: {

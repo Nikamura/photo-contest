@@ -33,7 +33,7 @@ async function streamToBuffer(readableStream: any): Promise<Buffer> {
 
 export async function POST({ locals, params }) {
   const user = (await locals.getSession())?.user;
-  if (!user) throw error(401);
+  if (!user) error(401);
 
   const id = params.slug;
   const fileUpload = await prisma.fileUpload.findUniqueOrThrow({
@@ -42,7 +42,7 @@ export async function POST({ locals, params }) {
     },
   });
 
-  if (fileUpload.userId !== user.id) throw error(401);
+  if (fileUpload.userId !== user.id) error(401);
 
   const resp = await minio.getObject(fileUpload.bucketName!, fileUpload.bucketKey!);
   const body = await streamToBuffer(resp);

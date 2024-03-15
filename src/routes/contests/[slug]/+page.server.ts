@@ -5,7 +5,7 @@ import { isAdmin } from "../../../tools/isAdmin";
 
 export const load = (async ({ params, locals }) => {
   const user = (await locals.getSession())?.user;
-  if (!user) throw error(401);
+  if (!user) error(401);
 
   const contest = await prisma.contest.findFirst({
     where: {
@@ -22,7 +22,7 @@ export const load = (async ({ params, locals }) => {
       },
     },
   });
-  if (!contest) throw error(404);
+  if (!contest) error(404);
 
   const fileUploads = await prisma.fileUpload.findMany({
     where: {
@@ -59,7 +59,7 @@ export const load = (async ({ params, locals }) => {
 export const actions = {
   saveSelectedPhotos: async (event) => {
     const user = (await event.locals.getSession())?.user;
-    if (!user) throw error(401);
+    if (!user) error(401);
 
     const data = await event.request.formData();
     const selectedPhotos = data.getAll("selectedPhotos") as string[];
@@ -74,15 +74,15 @@ export const actions = {
       },
     });
 
-    if (fileUploads.length !== selectedPhotos.length) throw error(400);
+    if (fileUploads.length !== selectedPhotos.length) error(400);
     const contest = await prisma.contest.findFirst({
       where: {
         id: event.params.slug,
       },
     });
-    if (!contest) throw error(404);
+    if (!contest) error(404);
     if (contest.contestStatus !== "ACCEPTING_ENTRIES") {
-      throw error(400, "Contest is not accepting entries");
+      error(400, "Contest is not accepting entries");
     }
 
     await prisma.contestEntry.createMany({

@@ -5,9 +5,9 @@ import type { PageServerLoad } from "./$types";
 
 export const load = (async ({ locals, url }) => {
   const session = await locals.getSession();
-  if (!session?.user) throw redirect(303, `/auth?from=${url.pathname}`);
+  if (!session?.user) redirect(303, `/auth?from=${url.pathname}`);
 
-  const contests = prisma.contest.findMany({});
+  const contests = await prisma.contest.findMany({});
 
   const user = session.user;
   return { contests, isAdmin: isAdmin(user) };
