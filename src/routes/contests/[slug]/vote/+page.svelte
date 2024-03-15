@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   import JSZip from "jszip";
-  import { saveAs } from "file-saver";
+
+  import pkg from "file-saver";
+  const { saveAs } = pkg;
 
   export let data: PageData;
 
