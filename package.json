@@ -66,8 +66,5 @@
   },
   "trustedDependencies": [
     "sharp"
-  ],
-  "trigger.dev": {
-    "endpointId": "photo-contest"
-  }
+  ]
 }
