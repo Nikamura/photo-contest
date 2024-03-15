@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prebuild": "pnpm run lint && pnpm run check",
-    "build": "vite build",
+    "build": "prisma generate && pnpm run lint && pnpm run check && vite build",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "dev": "vite dev",
@@ -12,7 +11,6 @@
     "lint": "prettier --check . && eslint .",
     "migrate:dev": "prisma migrate dev",
     "migrate": "prisma migrate deploy && prisma db seed && prisma generate",
-    "postinstall": "prisma generate",
     "preinstall": "npx only-allow pnpm",
     "preview": "vite preview"
   },
@@ -22,7 +20,7 @@
     "@auth/sveltekit": "0.14.0",
     "@iconify-json/fa": "1.1.8",
     "@prisma/client": "5.11.0",
-    "@sveltejs/adapter-node": "5.0.1",
+    "@sveltejs/adapter-vercel": "5.1.1",
     "@sveltejs/kit": "2.5.4",
     "@sveltejs/vite-plugin-svelte": "3.0.2",
     "@types/file-saver": "2.0.7",
