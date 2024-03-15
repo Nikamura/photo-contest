@@ -31,7 +31,7 @@
     });
   }
 
-  import BiggerPicture from "bigger-picture/svelte";
+  import BiggerPicture from "bigger-picture";
   import "bigger-picture/css";
 
   import { onMount } from "svelte";

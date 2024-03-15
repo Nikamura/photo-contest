@@ -19,5 +19,6 @@ jobs:
       - run: pnpm install
       - run: |
           cp .env.example .env
+          pnpm run check
           pnpm run build
           pnpm run lint

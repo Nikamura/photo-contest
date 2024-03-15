@@ -1,6 +1,5 @@
 import { SvelteKitAuth, type SvelteKitAuthConfig } from "@auth/sveltekit";
 import Google from "@auth/core/providers/google";
-import type { Handle } from "@sveltejs/kit";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { AUTH_GOOGLE_CLIENT_ID, AUTH_GOOGLE_CLIENT_SECRET, AUTH_SECRET } from "$env/static/private";
@@ -28,7 +27,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async () => {
     },
   } satisfies SvelteKitAuthConfig;
   return authOptions;
-}) satisfies Handle;
+});
 
 // // Fix from https://github.com/nextauthjs/next-auth/issues/6451#issuecomment-1399793425
 // // So it works via reverse proxy :/

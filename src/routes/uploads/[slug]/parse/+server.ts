@@ -3,7 +3,9 @@ import minio from "$lib/minio";
 import sharp from "sharp";
 import { error, json } from "@sveltejs/kit";
 import exif from "exif-reader";
+// @ts-ignore
 import iptc from "iptc-reader";
+// @ts-ignore
 import xmp from "xmp-reader";
 import icc from "icc";
 
